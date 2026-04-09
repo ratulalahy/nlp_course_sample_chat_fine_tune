@@ -165,32 +165,88 @@ dataset:
 
 ---
 
-## Portfolio Tips
+## Deploying Your Chatbot (Portfolio)
 
-### Get a Shareable Link
+You have two ways to make your chatbot accessible to anyone. Start with the quick Gradio link, then set up a permanent deployment when you're ready.
 
-The app already launches with `share=True`, so when you run `python app.py`, Gradio will print a public URL like:
+---
+
+### Option 1: Quick Shareable Link (Gradio Live)
+
+The app already launches with `share=True`, so when you run `python app.py`, Gradio prints a public URL:
 
 ```
 Running on public URL: https://xxxxx.gradio.live
 ```
 
-Anyone with that link can try your chatbot. The link stays active for about 72 hours.
+Anyone with the link can try your chatbot. The link stays active for **72 hours**.
 
-### Host Permanently on HuggingFace Spaces
+**Best for:** Quick demos, sharing with classmates, screenshots for your portfolio.
 
-If you want a permanent link (great for resumes and portfolios):
+---
 
-1. Create a free account at [huggingface.co](https://huggingface.co)
-2. Create a new Space (select "Gradio" as the SDK)
-3. Upload your project files (`app.py`, `config.yaml`, `data_utils.py`, `requirements.txt`, and your `output/` folder)
-4. The Space will build and deploy your chatbot automatically
+### Option 2: Permanent Deployment on HuggingFace
+
+For a permanent link that stays live (great for resumes), you can deploy to [HuggingFace Spaces](https://huggingface.co/spaces). This involves two steps: uploading your fine-tuned model, then creating a Space that runs your chatbot.
+
+#### Step 1: Push your fine-tuned model to HuggingFace Hub
+
+After fine-tuning, run the upload script to push your model to your HuggingFace account:
+
+```bash
+python upload_model.py
+```
+
+This will:
+- Ask for your HuggingFace username (e.g., `student123`)
+- Ask for a model name (e.g., `my-qa-bot`)
+- Upload your fine-tuned model to `student123/my-qa-bot` on HuggingFace
+
+> **First time?** You'll need to log in first:
+> ```bash
+> pip install huggingface_hub
+> huggingface-cli login
+> ```
+> Get your access token from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) (create a token with "Write" permission).
+
+#### Step 2: Create a HuggingFace Space
+
+1. Go to [huggingface.co/new-space](https://huggingface.co/new-space)
+2. Name your Space (e.g., `my-qa-chatbot`)
+3. Select **Gradio** as the SDK
+4. Select **CPU basic** (free tier) — this is enough for inference
+5. Upload these files to your Space:
+   - `app.py`
+   - `config.yaml`
+   - `data_utils.py`
+   - `requirements.txt`
+6. Edit `config.yaml` in the Space to point to your uploaded model:
+   ```yaml
+   training:
+     output_dir: "output/"  # The app will download your model here automatically
+   ```
+7. Edit `app.py` — at the top, add your HuggingFace model ID:
+   ```python
+   # Add this after the imports to auto-download your model from HuggingFace
+   HF_MODEL_ID = "student123/my-qa-bot"  # Replace with your model ID
+   ```
+
+> **Or the simple way:** Just upload your entire project folder including the `output/` directory to the Space. This skips the Hub upload step but uses more storage (~500MB-2GB depending on model size). HuggingFace Spaces free tier has 10GB storage.
+
+#### What Students Get
+
+After deployment, you'll have:
+- A permanent URL like `https://huggingface.co/spaces/student123/my-qa-chatbot`
+- Your model hosted at `https://huggingface.co/student123/my-qa-bot`
+- Both are public and can go on your resume/portfolio
+
+---
 
 ### Resume / Portfolio Description
 
-Here is an example you can adapt for your resume or portfolio:
+Here is an example you can adapt:
 
-> *Built an NLP chatbot by fine-tuning a pre-trained language model (TinyLlama 1.1B) on a custom Q&A dataset using LoRA. Deployed the model as an interactive web application using Gradio. Technologies: Python, PyTorch, HuggingFace Transformers, PEFT, Gradio.*
+> *Fine-tuned a TinyLlama 1.1B language model on a custom Q&A dataset using LoRA (Low-Rank Adaptation). Built an interactive chatbot interface with Gradio and deployed it to HuggingFace Spaces. The project demonstrates end-to-end NLP: dataset preparation, model fine-tuning, experiment tracking, and web deployment. Technologies: Python, PyTorch, HuggingFace Transformers, PEFT, Gradio.*
 
 ### Record a Demo
 

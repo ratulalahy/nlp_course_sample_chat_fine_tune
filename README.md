@@ -79,10 +79,11 @@ python app.py                   # Chat with fine-tuned model
 │   ├── qa_bot.json          # General Q&A (50 examples)
 │   ├── uvu_bot.json         # UVU FAQ (50 examples)
 │   └── cs_assistant.json    # CS concepts (50 examples)
+├── upload_model.py          # Upload fine-tuned model to HuggingFace Hub
 ├── examples/
 │   └── load_hf_dataset.py   # How to use real HuggingFace datasets
 ├── requirements.txt         # Python dependencies
-├── GUIDE.md                 # Detailed learning guide (LoRA, data, portfolio)
+├── GUIDE.md                 # Learning guide (LoRA, data, deployment, portfolio)
 └── README.md
 ```
 
@@ -167,6 +168,23 @@ training:
 > **WARNING:** Full fine-tuning requires 16GB+ GPU memory. If you get an out-of-memory error, switch back to `"lora"`.
 
 For a deeper explanation of LoRA, QLoRA, and how they work, see [GUIDE.md](GUIDE.md#fine-tuning-methods-lora-qlora-and-full).
+
+---
+
+## Deploying for Your Portfolio
+
+| Method | How | Duration |
+|--------|-----|----------|
+| **Gradio link** | `python app.py` — a public URL is printed automatically | 72 hours |
+| **HuggingFace Spaces** | Upload model + app to a free HuggingFace Space | Permanent |
+
+To upload your fine-tuned model to HuggingFace Hub:
+```bash
+huggingface-cli login          # One-time setup
+python upload_model.py         # Upload your model
+```
+
+For step-by-step deployment instructions, see [GUIDE.md](GUIDE.md#deploying-your-chatbot-portfolio).
 
 ---
 
