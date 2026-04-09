@@ -244,15 +244,15 @@ All of these models can be used by changing the `model.name` field in `config.ya
 
 | Model | HuggingFace ID | Size | Free Colab? |
 |-------|---------------|------|-------------|
-| TinyLlama | `TinyLlama/TinyLlama-1.1B-Chat-v1.0` | ~700MB | Yes |
-| Qwen3 0.6B | `Qwen/Qwen3-0.6B` | ~400MB | Yes |
-| SmolLM2 | `HuggingFaceTB/SmolLM2-1.7B-Instruct` | 1.7B | Yes |
-| Llama 3.2 1B | `meta-llama/Llama-3.2-1B-Instruct` | 1B | Yes |
-| Gemma 4 E2B | `google/gemma-4-e2b` | ~2B | Yes |
-| Gemma 4 E4B | `google/gemma-4-e4b` | ~4B | Yes (LoRA) |
-| Phi-3.5 Mini | `microsoft/Phi-3.5-mini-instruct` | 3.8B | Yes (LoRA) |
-| Llama 3.2 3B | `meta-llama/Llama-3.2-3B-Instruct` | 3B | Yes |
-| Mistral 7B | `mistralai/Mistral-7B-Instruct-v0.3` | 7B | LoRA only |
+| [TinyLlama](https://huggingface.co/TinyLlama/TinyLlama-1.1B-Chat-v1.0) | `TinyLlama/TinyLlama-1.1B-Chat-v1.0` | ~700MB | Yes |
+| [Qwen3 0.6B](https://huggingface.co/Qwen/Qwen3-0.6B) | `Qwen/Qwen3-0.6B` | ~400MB | Yes |
+| [SmolLM2](https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct) | `HuggingFaceTB/SmolLM2-1.7B-Instruct` | 1.7B | Yes |
+| [Llama 3.2 1B](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct) | `meta-llama/Llama-3.2-1B-Instruct` | 1B | Yes |
+| [Gemma 4 E2B](https://huggingface.co/google/gemma-4-e2b) | `google/gemma-4-e2b` | ~2B | Yes |
+| [Gemma 4 E4B](https://huggingface.co/google/gemma-4-e4b) | `google/gemma-4-e4b` | ~4B | Yes (LoRA) |
+| [Phi-3.5 Mini](https://huggingface.co/microsoft/Phi-3.5-mini-instruct) | `microsoft/Phi-3.5-mini-instruct` | 3.8B | Yes (LoRA) |
+| [Llama 3.2 3B](https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct) | `meta-llama/Llama-3.2-3B-Instruct` | 3B | Yes |
+| [Mistral 7B](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3) | `mistralai/Mistral-7B-Instruct-v0.3` | 7B | LoRA only |
 
 **Recommendation:** Start with **TinyLlama** or **Qwen3 0.6B**. They are small enough to train quickly on free Colab hardware and still produce good results. Once you are comfortable, try a larger model for better quality.
 

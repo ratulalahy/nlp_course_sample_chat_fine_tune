@@ -1,13 +1,14 @@
 """
 app.py — Gradio Chat Interface
 ================================
-This script launches a web-based chatbot using your fine-tuned model.
+This script launches a web-based chatbot.
 
 Usage:
-  python app.py
+  python app.py              # Chat with your fine-tuned model
+  python app.py --base       # Chat with the BASE model (before fine-tuning)
 
-The app loads the fine-tuned model from the output directory and
-creates a shareable chat interface — perfect for your portfolio!
+The --base flag lets you try the model BEFORE fine-tuning, so you can
+compare how it responds before and after training on your dataset.
 
 Portfolio tip: Run with share=True to get a public URL you can share!
 """
@@ -26,6 +27,10 @@ import gradio as gr
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
 
+# Check if user wants to run the base model (before fine-tuning)
+# Usage: python app.py --base
+USE_BASE_MODEL = "--base" in sys.argv
+
 # =============================================================================
 # STEP 2: LOAD CONFIGURATION AND TRAINING METADATA
 # We read the same config.yaml used during training, plus the metadata file
@@ -38,34 +43,52 @@ with open("config.yaml", "r") as f:
 
 output_dir = config["training"]["output_dir"]  # e.g. "output/"
 
-# --- Check that the fine-tuned model actually exists ---
-# If you haven't run finetune.py yet, there's nothing to load!
-if not os.path.exists(output_dir) or not os.listdir(output_dir):
-    print("=" * 60)
-    print("No fine-tuned model found! Run finetune.py first.")
-    print(f"  Expected output directory: {output_dir}")
-    print("=" * 60)
-    sys.exit(1)
-
-# Load training metadata so we can display it in the UI
-# finetune.py saves this file with info about the training run.
-info_path = os.path.join(output_dir, "training_info.json")
-if os.path.exists(info_path):
-    with open(info_path, "r") as f:
-        training_info = json.load(f)
-else:
-    # Fallback defaults if the file is missing (shouldn't happen normally)
-    training_info = {
-        "model_name": config["model"]["name"],
-        "dataset_path": config.get("dataset", {}).get("path", "unknown"),
-        "method": config["training"]["method"],
-        "epochs": config["training"]["epochs"],
-    }
-
 # Pick the best available device: GPU if you have one, otherwise CPU.
 # On Google Colab with a T4 GPU, this will select "cuda".
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}")
+
+if USE_BASE_MODEL:
+    # --- BASE MODEL MODE ---
+    # Load the original model directly from HuggingFace (no fine-tuning).
+    # This lets you see how the model responds BEFORE training on your data.
+    print("=" * 60)
+    print("  RUNNING IN BASE MODEL MODE (--base flag)")
+    print("  This is the model BEFORE fine-tuning.")
+    print("  Compare this with the fine-tuned version to see the difference!")
+    print("=" * 60)
+    training_info = {
+        "model_name": config["model"]["name"],
+        "dataset_path": "N/A (base model)",
+        "method": "none (base model)",
+        "epochs": 0,
+    }
+else:
+    # --- FINE-TUNED MODEL MODE (default) ---
+    # Check that the fine-tuned model actually exists.
+    if not os.path.exists(output_dir) or not os.listdir(output_dir):
+        print("=" * 60)
+        print("  No fine-tuned model found!")
+        print(f"  Expected output directory: {output_dir}")
+        print()
+        print("  Options:")
+        print("    1. Run finetune.py first:  python finetune.py")
+        print("    2. Try the base model:     python app.py --base")
+        print("=" * 60)
+        sys.exit(1)
+
+    # Load training metadata so we can display it in the UI
+    info_path = os.path.join(output_dir, "training_info.json")
+    if os.path.exists(info_path):
+        with open(info_path, "r") as f:
+            training_info = json.load(f)
+    else:
+        training_info = {
+            "model_name": config["model"]["name"],
+            "dataset_path": config.get("dataset", {}).get("path", "unknown"),
+            "method": config["training"]["method"],
+            "epochs": config["training"]["epochs"],
+        }
 
 # =============================================================================
 # STEP 3: LOAD THE FINE-TUNED MODEL
@@ -74,28 +97,41 @@ print(f"Using device: {device}")
 #   - Full: the entire model was saved to output_dir, so load it directly
 # =============================================================================
 
-method = training_info.get("method", "lora")
 base_model_name = training_info.get("model_name", config["model"]["name"])
 
-# Load the tokenizer (always saved to output_dir during training)
-tokenizer = AutoTokenizer.from_pretrained(output_dir)
-
-if method == "lora":
-    # For LoRA, we first load the original base model from HuggingFace,
-    # then layer the small LoRA adapter weights on top.
+if USE_BASE_MODEL:
+    # Load the original model and tokenizer directly from HuggingFace
     print(f"Loading base model: {base_model_name}")
-    base_model = AutoModelForCausalLM.from_pretrained(
+    tokenizer = AutoTokenizer.from_pretrained(base_model_name)
+    model = AutoModelForCausalLM.from_pretrained(
         base_model_name, dtype=torch.float16, device_map=device
     )
-    # PeftModel.from_pretrained merges the adapter into the base model
-    print(f"Loading LoRA adapter from: {output_dir}")
-    model = PeftModel.from_pretrained(base_model, output_dir)
 else:
-    # For full fine-tuning, the whole model lives in output_dir
-    print(f"Loading fully fine-tuned model from: {output_dir}")
-    model = AutoModelForCausalLM.from_pretrained(
-        output_dir, dtype=torch.float16, device_map=device
-    )
+    method = training_info.get("method", "lora")
+
+    # Load the tokenizer (saved to output_dir during training)
+    tokenizer = AutoTokenizer.from_pretrained(output_dir)
+
+    if method == "lora":
+        # For LoRA, we first load the original base model from HuggingFace,
+        # then layer the small LoRA adapter weights on top.
+        print(f"Loading base model: {base_model_name}")
+        base_model = AutoModelForCausalLM.from_pretrained(
+            base_model_name, dtype=torch.float16, device_map=device
+        )
+        # PeftModel.from_pretrained merges the adapter into the base model
+        print(f"Loading LoRA adapter from: {output_dir}")
+        model = PeftModel.from_pretrained(base_model, output_dir)
+    else:
+        # For full fine-tuning, the whole model lives in output_dir
+        print(f"Loading fully fine-tuned model from: {output_dir}")
+        model = AutoModelForCausalLM.from_pretrained(
+            output_dir, dtype=torch.float16, device_map=device
+        )
+
+# Set pad_token if needed (common fix for many models)
+if tokenizer.pad_token is None:
+    tokenizer.pad_token = tokenizer.eos_token
 
 # Switch to evaluation mode (disables dropout, etc.)
 model.eval()
@@ -165,18 +201,27 @@ def chat(message, history, temperature, max_tokens):
 # =============================================================================
 
 # Build a description string showing training details
-description = (
-    f"**Model:** {training_info.get('model_name', 'N/A')}\n\n"
-    f"**Dataset:** {training_info.get('dataset_path', 'N/A')}\n\n"
-    f"**Method:** {training_info.get('method', 'N/A')} "
-    f"| **Epochs:** {training_info.get('epochs', 'N/A')}"
-)
+if USE_BASE_MODEL:
+    title = "Base Model Chatbot (Before Fine-Tuning)"
+    description = (
+        f"**Model:** {training_info.get('model_name', 'N/A')}\n\n"
+        f"This is the **base model** — no fine-tuning applied.\n\n"
+        f"Compare this with the fine-tuned version to see the improvement!"
+    )
+else:
+    title = "Fine-Tuned NLP Chatbot"
+    description = (
+        f"**Model:** {training_info.get('model_name', 'N/A')}\n\n"
+        f"**Dataset:** {training_info.get('dataset_path', 'N/A')}\n\n"
+        f"**Method:** {training_info.get('method', 'N/A')} "
+        f"| **Epochs:** {training_info.get('epochs', 'N/A')}"
+    )
 
 # Create the chat interface with adjustable generation settings
 demo = gr.ChatInterface(
     fn=chat,
     type="messages",  # Modern format: list of {"role": ..., "content": ...} dicts
-    title="Fine-Tuned NLP Chatbot",
+    title=title,
     description=description,
     # Example prompts so users can try the bot right away
     # Each example is a list: [message, temperature, max_tokens]
