@@ -1,0 +1,202 @@
+[
+  {
+    "instruction": "What is an array?",
+    "response": "An array is a data structure that stores a fixed-size collection of elements of the same type in contiguous memory locations. Elements are accessed using an index, typically starting at 0, which allows constant-time O(1) access to any element. Arrays are efficient for random access but costly for insertions and deletions in the middle since elements must be shifted."
+  },
+  {
+    "instruction": "What is a linked list?",
+    "response": "A linked list is a linear data structure where each element (node) contains data and a pointer to the next node in the sequence. Unlike arrays, linked lists do not store elements contiguously in memory, which makes insertions and deletions efficient at O(1) if you have a reference to the node. However, accessing an element by index requires O(n) traversal since there is no random access."
+  },
+  {
+    "instruction": "What is the difference between a singly linked list and a doubly linked list?",
+    "response": "A singly linked list has nodes that each contain a pointer to the next node only, allowing traversal in one direction. A doubly linked list has nodes with pointers to both the next and previous nodes, enabling traversal in both directions. Doubly linked lists use more memory per node but make operations like deletion and reverse traversal more efficient."
+  },
+  {
+    "instruction": "What is a stack?",
+    "response": "A stack is a linear data structure that follows the Last In, First Out (LIFO) principle, meaning the last element added is the first one removed. The two primary operations are push (add to top) and pop (remove from top), both of which run in O(1) time. Stacks are used in function call management, expression evaluation, undo operations, and depth-first search."
+  },
+  {
+    "instruction": "What is a queue?",
+    "response": "A queue is a linear data structure that follows the First In, First Out (FIFO) principle, where elements are added at the rear and removed from the front. The main operations are enqueue (add) and dequeue (remove), both running in O(1) time with a proper implementation. Queues are commonly used in breadth-first search, task scheduling, and buffering."
+  },
+  {
+    "instruction": "What is a binary tree?",
+    "response": "A binary tree is a hierarchical data structure in which each node has at most two children, referred to as the left child and the right child. The topmost node is called the root, and nodes with no children are called leaves. Binary trees form the basis for more specialized structures like binary search trees, heaps, and expression trees."
+  },
+  {
+    "instruction": "What is a binary search tree (BST)?",
+    "response": "A binary search tree is a binary tree where for every node, all values in its left subtree are less than the node's value, and all values in its right subtree are greater. This ordering property enables efficient search, insertion, and deletion operations in O(log n) average time. However, in the worst case (a skewed tree), these operations degrade to O(n)."
+  },
+  {
+    "instruction": "What is a hash table?",
+    "response": "A hash table is a data structure that maps keys to values using a hash function to compute an index into an array of buckets. It provides average-case O(1) time complexity for insertions, deletions, and lookups. Collisions, where two keys hash to the same index, are handled using techniques like chaining (linked lists at each bucket) or open addressing (probing for the next empty slot)."
+  },
+  {
+    "instruction": "What is a graph in computer science?",
+    "response": "A graph is a data structure consisting of vertices (nodes) and edges (connections between nodes). Graphs can be directed (edges have a direction) or undirected, and weighted (edges have values) or unweighted. They are used to model relationships such as social networks, road maps, web page links, and dependency systems."
+  },
+  {
+    "instruction": "What is the difference between BFS and DFS?",
+    "response": "Breadth-First Search (BFS) explores a graph level by level using a queue, visiting all neighbors of a node before moving to the next level. Depth-First Search (DFS) explores as far as possible along each branch before backtracking, typically using a stack or recursion. BFS finds the shortest path in unweighted graphs, while DFS is useful for topological sorting and detecting cycles."
+  },
+  {
+    "instruction": "What is Big-O notation?",
+    "response": "Big-O notation is a mathematical notation used to describe the upper bound of an algorithm's time or space complexity as the input size grows. For example, O(n) means the running time grows linearly with input size, while O(n^2) means it grows quadratically. It focuses on the dominant term and ignores constants, providing a way to compare algorithm efficiency for large inputs."
+  },
+  {
+    "instruction": "What is the time complexity of binary search?",
+    "response": "Binary search has a time complexity of O(log n) because it repeatedly divides the search space in half with each comparison. It requires the input array to be sorted and compares the target value to the middle element, eliminating half of the remaining elements each step. This makes it significantly faster than linear search O(n) for large sorted datasets."
+  },
+  {
+    "instruction": "How does bubble sort work?",
+    "response": "Bubble sort works by repeatedly stepping through the list, comparing adjacent elements, and swapping them if they are in the wrong order. This process is repeated until no swaps are needed, indicating the list is sorted. It has a time complexity of O(n^2) in the average and worst cases, making it inefficient for large datasets but easy to understand and implement."
+  },
+  {
+    "instruction": "How does merge sort work?",
+    "response": "Merge sort is a divide-and-conquer algorithm that splits the array into two halves, recursively sorts each half, and then merges the sorted halves back together. The merge step combines two sorted arrays into one sorted array in O(n) time. Merge sort has a guaranteed time complexity of O(n log n) in all cases and is stable, meaning it preserves the relative order of equal elements."
+  },
+  {
+    "instruction": "How does quicksort work?",
+    "response": "Quicksort is a divide-and-conquer algorithm that selects a pivot element and partitions the array into elements less than the pivot and elements greater than the pivot. It then recursively sorts the two partitions. Quicksort has an average time complexity of O(n log n) but can degrade to O(n^2) in the worst case with poor pivot selection, though this is rare with randomized pivot strategies."
+  },
+  {
+    "instruction": "What is recursion?",
+    "response": "Recursion is a programming technique where a function calls itself to solve a problem by breaking it down into smaller subproblems. Every recursive function needs a base case that stops the recursion and a recursive case that moves toward the base case. Common examples include computing factorials, Fibonacci numbers, and traversing tree structures."
+  },
+  {
+    "instruction": "What is object-oriented programming (OOP)?",
+    "response": "Object-oriented programming is a programming paradigm that organizes code into objects, which are instances of classes that bundle data (attributes) and behavior (methods) together. The four main principles of OOP are encapsulation, inheritance, polymorphism, and abstraction. OOP promotes code reuse, modularity, and easier maintenance in large software systems."
+  },
+  {
+    "instruction": "What is encapsulation in OOP?",
+    "response": "Encapsulation is the OOP principle of bundling data and the methods that operate on that data within a single unit (a class) while restricting direct access to some of the object's internal state. This is typically achieved through access modifiers like private and public, which control what other code can see and modify. Encapsulation protects data integrity and reduces coupling between components."
+  },
+  {
+    "instruction": "What is inheritance in OOP?",
+    "response": "Inheritance is an OOP mechanism that allows a new class (child or subclass) to inherit attributes and methods from an existing class (parent or superclass). This promotes code reuse, as common functionality can be defined once in the parent class and shared by all subclasses. Subclasses can also override inherited methods to provide specialized behavior."
+  },
+  {
+    "instruction": "What is polymorphism?",
+    "response": "Polymorphism is the OOP principle that allows objects of different classes to be treated as objects of a common parent class, with each class implementing methods in its own way. For example, a draw() method might behave differently for Circle and Rectangle objects, but both can be called through a Shape reference. This enables flexible and extensible code design."
+  },
+  {
+    "instruction": "What is abstraction in OOP?",
+    "response": "Abstraction is the OOP principle of hiding complex implementation details and exposing only the essential features of an object through a simplified interface. Abstract classes and interfaces define what an object can do without specifying how it does it. This allows developers to work with higher-level concepts without needing to understand all underlying details."
+  },
+  {
+    "instruction": "What is a pointer?",
+    "response": "A pointer is a variable that stores the memory address of another variable rather than a direct value. Pointers are fundamental in languages like C and C++, enabling dynamic memory allocation, efficient array manipulation, and building data structures like linked lists and trees. Improper use of pointers can lead to bugs such as segmentation faults, memory leaks, and dangling pointer references."
+  },
+  {
+    "instruction": "What is dynamic memory allocation?",
+    "response": "Dynamic memory allocation is the process of allocating memory at runtime from the heap, as opposed to static allocation at compile time on the stack. In C, functions like malloc() and free() are used, while C++ uses new and delete operators. Dynamic allocation allows programs to request exactly the memory they need, but requires careful management to avoid memory leaks."
+  },
+  {
+    "instruction": "What is a heap data structure?",
+    "response": "A heap is a specialized tree-based data structure that satisfies the heap property: in a max-heap, every parent node's value is greater than or equal to its children's values, and in a min-heap, every parent's value is less than or equal to its children's. Heaps are typically implemented as arrays and are used to implement priority queues. Insertion and extraction of the max or min element both run in O(log n) time."
+  },
+  {
+    "instruction": "What is a priority queue?",
+    "response": "A priority queue is an abstract data type where each element has an associated priority, and elements are dequeued in order of their priority rather than their insertion order. It is commonly implemented using a heap, giving O(log n) time for insertion and extraction of the highest-priority element. Priority queues are used in algorithms like Dijkstra's shortest path and Huffman encoding."
+  },
+  {
+    "instruction": "What is a relational database?",
+    "response": "A relational database organizes data into tables (relations) consisting of rows (records) and columns (attributes), with relationships defined between tables through foreign keys. SQL (Structured Query Language) is used to query, insert, update, and delete data. Relational databases enforce data integrity through constraints and support ACID transactions for reliable data management."
+  },
+  {
+    "instruction": "What is SQL?",
+    "response": "SQL (Structured Query Language) is the standard language for managing and querying relational databases. It includes commands for data definition (CREATE, ALTER, DROP), data manipulation (SELECT, INSERT, UPDATE, DELETE), and data control (GRANT, REVOKE). SQL allows users to filter, join, aggregate, and sort data across multiple tables efficiently."
+  },
+  {
+    "instruction": "What is normalization in databases?",
+    "response": "Normalization is the process of organizing a relational database to reduce data redundancy and improve data integrity. It involves dividing large tables into smaller, related tables and defining relationships between them through a series of normal forms (1NF, 2NF, 3NF, and beyond). While normalization reduces anomalies during insertions, updates, and deletions, over-normalization can lead to performance issues due to excessive joins."
+  },
+  {
+    "instruction": "What is the difference between TCP and UDP?",
+    "response": "TCP (Transmission Control Protocol) is a connection-oriented protocol that provides reliable, ordered data delivery through acknowledgments and retransmissions. UDP (User Datagram Protocol) is connectionless and does not guarantee delivery, ordering, or duplicate protection, but is faster and has lower overhead. TCP is used for web browsing and email, while UDP is preferred for streaming, gaming, and DNS queries."
+  },
+  {
+    "instruction": "What is an IP address?",
+    "response": "An IP (Internet Protocol) address is a numerical label assigned to each device on a computer network that uses the Internet Protocol for communication. IPv4 addresses use a 32-bit format (e.g., 192.168.1.1) and are being gradually supplemented by IPv6 addresses, which use a 128-bit format to accommodate the growing number of internet-connected devices."
+  },
+  {
+    "instruction": "What is the OSI model?",
+    "response": "The OSI (Open Systems Interconnection) model is a conceptual framework that standardizes network communication into seven layers: Physical, Data Link, Network, Transport, Session, Presentation, and Application. Each layer has specific responsibilities and communicates with the layers directly above and below it. The model helps engineers understand, design, and troubleshoot network systems by breaking complex communication into manageable layers."
+  },
+  {
+    "instruction": "What is an operating system?",
+    "response": "An operating system (OS) is system software that manages computer hardware and software resources and provides services for application programs. It handles tasks like process management, memory management, file system operations, and device driver communication. Common examples include Windows, macOS, Linux, Android, and iOS."
+  },
+  {
+    "instruction": "What is a process in operating systems?",
+    "response": "A process is an instance of a program that is being executed, consisting of the program code, its current activity (program counter), stack, data section, and heap. The operating system manages processes by allocating resources, scheduling CPU time, and handling inter-process communication. Each process has its own address space, isolating it from other processes for security and stability."
+  },
+  {
+    "instruction": "What is the difference between a process and a thread?",
+    "response": "A process is an independent program in execution with its own memory space, while a thread is a lightweight unit of execution within a process that shares the process's memory and resources. Multiple threads within a process can run concurrently, enabling parallelism with less overhead than creating separate processes. However, shared memory means threads must be carefully synchronized to avoid race conditions."
+  },
+  {
+    "instruction": "What is virtual memory?",
+    "response": "Virtual memory is an OS memory management technique that gives each process the illusion of having its own large, contiguous address space, even if physical RAM is limited. The OS maps virtual addresses to physical addresses using a page table, and pages not currently needed in RAM are stored on disk. This allows systems to run programs larger than physical memory and provides memory isolation between processes."
+  },
+  {
+    "instruction": "What is a deadlock?",
+    "response": "A deadlock is a situation in concurrent computing where two or more processes are each waiting for the other to release a resource, resulting in none of them being able to proceed. Deadlock requires four conditions to occur simultaneously: mutual exclusion, hold and wait, no preemption, and circular wait. Prevention strategies include imposing a resource ordering or using timeouts."
+  },
+  {
+    "instruction": "What is the difference between compilation and interpretation?",
+    "response": "Compilation translates the entire source code into machine code or bytecode before execution, producing a standalone executable that runs directly on the hardware. Interpretation translates and executes code line by line at runtime without producing a separate executable. Compiled languages (C, C++) tend to run faster, while interpreted languages (Python, JavaScript) offer faster development cycles and platform independence."
+  },
+  {
+    "instruction": "What is a hash function?",
+    "response": "A hash function takes an input (or key) and returns a fixed-size integer value called a hash code, which is used to determine the index in a hash table. A good hash function distributes keys uniformly across the table to minimize collisions. In cryptography, hash functions like SHA-256 are designed to be one-way, meaning it is computationally infeasible to reverse the output back to the input."
+  },
+  {
+    "instruction": "What is a trie?",
+    "response": "A trie (pronounced \"try\") is a tree-like data structure used to efficiently store and retrieve strings, where each node represents a single character and paths from root to leaf spell out words. Tries support O(m) lookup, insertion, and deletion where m is the length of the key, regardless of how many keys are stored. They are commonly used for autocomplete, spell checking, and IP routing."
+  },
+  {
+    "instruction": "What is dynamic programming?",
+    "response": "Dynamic programming is an algorithmic technique that solves complex problems by breaking them into overlapping subproblems and storing the results to avoid redundant computation. It can be implemented top-down with memoization (caching recursive results) or bottom-up with tabulation (iteratively filling a table). Classic examples include the Fibonacci sequence, the knapsack problem, and finding the longest common subsequence."
+  },
+  {
+    "instruction": "What is the difference between a class and an object?",
+    "response": "A class is a blueprint or template that defines the attributes and methods that its objects will have, while an object is a specific instance of a class with actual values. For example, a Car class might define attributes like color and speed, while a specific Car object might have color set to red and speed set to 60. A single class can be used to create many objects, each with its own state."
+  },
+  {
+    "instruction": "What is an API?",
+    "response": "An API (Application Programming Interface) is a set of defined rules and protocols that allows different software applications to communicate with each other. APIs specify what requests can be made, the data formats to use, and what responses to expect. Web APIs commonly use REST or GraphQL architectures over HTTP to enable clients to interact with server-side services."
+  },
+  {
+    "instruction": "What is version control and why is Git important?",
+    "response": "Version control is a system that records changes to files over time so you can recall specific versions later, track who made changes, and collaborate with others. Git is the most widely used distributed version control system, allowing developers to work on branches independently, merge changes, and maintain a complete history of a project. Platforms like GitHub and GitLab build collaboration features on top of Git."
+  },
+  {
+    "instruction": "What is a balanced binary tree?",
+    "response": "A balanced binary tree is a binary tree where the heights of the left and right subtrees of every node differ by at most one. This balance ensures that operations like search, insertion, and deletion remain O(log n) rather than degrading to O(n) as they would in a skewed tree. AVL trees and Red-Black trees are common self-balancing binary search tree implementations."
+  },
+  {
+    "instruction": "What is Dijkstra's algorithm?",
+    "response": "Dijkstra's algorithm finds the shortest path from a source vertex to all other vertices in a weighted graph with non-negative edge weights. It works by greedily selecting the unvisited vertex with the smallest known distance, updating distances to its neighbors, and repeating until all vertices are visited. Using a min-heap priority queue, it runs in O((V + E) log V) time, where V is vertices and E is edges."
+  },
+  {
+    "instruction": "What is the difference between stack memory and heap memory?",
+    "response": "Stack memory is used for static allocation of local variables and function call frames, with memory automatically freed when a function returns. Heap memory is used for dynamic allocation where the programmer explicitly allocates and deallocates memory at runtime. Stack access is faster due to its LIFO structure and contiguous layout, but it has limited size, while the heap is larger but requires careful management to avoid memory leaks."
+  },
+  {
+    "instruction": "What is a design pattern in software engineering?",
+    "response": "A design pattern is a reusable solution to a commonly occurring problem in software design. Patterns are categorized into creational (e.g., Singleton, Factory), structural (e.g., Adapter, Decorator), and behavioral (e.g., Observer, Strategy) types. They provide a shared vocabulary among developers and promote best practices, though overuse can lead to unnecessary complexity."
+  },
+  {
+    "instruction": "What is the difference between NoSQL and SQL databases?",
+    "response": "SQL databases are relational, using structured tables with predefined schemas and SQL for querying, which makes them ideal for complex queries and transactions. NoSQL databases encompass a variety of non-relational models (document, key-value, column-family, graph) with flexible schemas, designed for scalability and handling unstructured or semi-structured data. The choice depends on the application's data model, consistency requirements, and scalability needs."
+  },
+  {
+    "instruction": "What is an interface in programming?",
+    "response": "An interface defines a contract of methods that a class must implement without providing the implementation itself. In languages like Java, a class can implement multiple interfaces, enabling a form of multiple inheritance for behavior. Interfaces promote loose coupling and make code more flexible by allowing different classes to be used interchangeably as long as they conform to the same interface."
+  },
+  {
+    "instruction": "What is garbage collection?",
+    "response": "Garbage collection is an automatic memory management feature found in languages like Java, Python, and C# that reclaims memory occupied by objects that are no longer reachable by the program. The garbage collector periodically identifies unused objects and frees their memory, reducing the risk of memory leaks. While convenient, garbage collection can introduce pauses and overhead, which is why performance-critical systems sometimes use manual memory management."
+  }
+]

@@ -1,0 +1,69 @@
+# =============================================================================
+# NLP FINE-TUNING CHATBOT — CONFIGURATION
+# =============================================================================
+# This file controls everything: which model to fine-tune, which dataset to use,
+# and all training parameters. Students: just change the settings below and run!
+# =============================================================================
+
+# =============================================================================
+# MODEL CONFIGURATION
+# Pick a model by uncommenting ONE line below.
+# Smaller models run faster and need less GPU memory.
+# =============================================================================
+model:
+  # ---- Small models (run on free Google Colab) ----
+  name: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"     # ~700MB, runs anywhere
+  # name: "Qwen/Qwen3-0.6B"                       # ~400MB, ultra-lightweight
+  # name: "HuggingFaceTB/SmolLM2-1.7B-Instruct"   # 1.7B, HuggingFace's own
+  # name: "meta-llama/Llama-3.2-1B-Instruct"      # 1B, Meta's smallest
+
+  # ---- Medium models (need free Colab GPU with LoRA) ----
+  # name: "google/gemma-4-e2b"                     # ~2B effective, newest (Apr 2026)
+  # name: "google/gemma-4-e4b"                     # ~4B effective, great balance
+  # name: "microsoft/Phi-3.5-mini-instruct"        # 3.8B, strong reasoning
+  # name: "meta-llama/Llama-3.2-3B-Instruct"      # 3B, Meta
+
+  # ---- Larger models (⚠️ need LoRA + quantization on free Colab) ----
+  # name: "mistralai/Mistral-7B-Instruct-v0.3"    # 7B, popular but heavy
+
+  max_length: 512    # Maximum sequence length for tokenization
+
+# =============================================================================
+# DATASET CONFIGURATION
+# Point to a local JSON file OR a HuggingFace dataset.
+# =============================================================================
+dataset:
+  # --- Option 1: Local JSON file (default) ---
+  path: "datasets/qa_bot.json"
+  # path: "datasets/uvu_bot.json"
+  # path: "datasets/cs_assistant.json"
+
+  # --- Option 2: HuggingFace dataset (uncomment below, comment out 'path') ---
+  # hf_name: "databricks/databricks-dolly-15k"    # Example HF dataset
+  # hf_split: "train[:500]"                       # Use a small subset
+  # hf_instruction_col: "instruction"             # Column name for input
+  # hf_response_col: "response"                   # Column name for output
+
+# =============================================================================
+# TRAINING CONFIGURATION
+# =============================================================================
+training:
+  method: "lora"          # "lora" (recommended) or "full"
+                          # ⚠️ WARNING: "full" fine-tuning requires 16GB+ GPU memory.
+                          # LoRA works on free Google Colab (T4 GPU, ~15GB).
+  epochs: 3               # Number of training passes over the dataset
+  batch_size: 4           # Samples per training step (lower = less memory)
+  learning_rate: 2.0e-4   # How fast the model learns (2e-4 is good for LoRA)
+  output_dir: "output/"   # Where to save the fine-tuned model
+  logging_steps: 10       # Print training loss every N steps
+
+# =============================================================================
+# LoRA CONFIGURATION (only used when training.method = "lora")
+# LoRA adds small trainable layers instead of updating all model weights.
+# This makes fine-tuning fast and memory-efficient.
+# =============================================================================
+lora:
+  r: 8                   # Rank — higher = more capacity but more memory (4-32)
+  alpha: 16              # Scaling factor — usually 2x the rank
+  dropout: 0.05          # Dropout for regularization (0.0-0.1)
+  target_modules: null   # null = auto-detect (recommended for beginners)
