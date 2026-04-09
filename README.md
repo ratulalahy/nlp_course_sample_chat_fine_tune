@@ -10,23 +10,31 @@ Welcome! In this project, you will fine-tune a small language model on a dataset
 
 This project is designed for NLP students. No prior fine-tuning experience is required -- just follow the steps below.
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ratulalahy/nlp_course_sample_chat_fine_tune/blob/main/notebook.ipynb)
+
 ---
 
 ## Quick Start (Google Colab)
 
-If you are using Google Colab (recommended for free GPU access), follow these five steps:
+**Recommended:** Click the "Open in Colab" badge above, or open `notebook.ipynb` in Google Colab. The notebook walks you through everything step by step.
 
-1. **Open the notebook** -- Upload this project folder to Google Drive or clone the repo into Colab.
-2. **Install dependencies** -- Run this in a Colab cell:
+If you prefer to run the scripts manually in Colab:
+
+1. **Clone the repo** in a Colab cell:
    ```
-   !pip install -r requirements.txt
+   !git clone https://github.com/ratulalahy/nlp_course_sample_chat_fine_tune.git
+   %cd nlp_course_sample_chat_fine_tune
+   ```
+2. **Install dependencies:**
+   ```
+   !pip install -r requirements.txt -q
    ```
 3. **Edit `config.yaml`** -- Pick your model and dataset. The defaults (TinyLlama + QA Bot) work great for a first run.
-4. **Fine-tune the model** -- Run the training script:
+4. **Fine-tune the model:**
    ```
    !python finetune.py
    ```
-5. **Launch the chatbot** -- Start the Gradio interface:
+5. **Launch the chatbot:**
    ```
    !python app.py
    ```
