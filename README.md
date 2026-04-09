@@ -16,15 +16,19 @@ Welcome! In this project, you will fine-tune a small language model on a dataset
 
 ## How It Works
 
-```
-                         config.yaml
-                             |
-                             v
-    datasets/*.json --> finetune.py --> output/
-                             |              |
-                             v              v
-                      experiments/       app.py --> Gradio Chatbot
-                     (before/after)       (shareable link)
+```mermaid
+flowchart LR
+    A[config.yaml] --> B[finetune.py]
+    D[datasets/*.json] --> B
+    B --> E[output/]
+    B --> F[experiments/]
+    E --> G[app.py]
+    G --> H[Gradio Chatbot\n shareable link]
+
+    style A fill:#ffd966,stroke:#333
+    style D fill:#d9ead3,stroke:#333
+    style H fill:#cfe2f3,stroke:#333
+    style F fill:#f4cccc,stroke:#333
 ```
 
 | Step | What happens |

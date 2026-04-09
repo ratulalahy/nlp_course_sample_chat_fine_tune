@@ -6,15 +6,19 @@ This guide covers the concepts and techniques used in this project. Read this al
 
 ## How This Project Works
 
-```
-                         config.yaml
-                             |
-                             v
-    datasets/*.json --> finetune.py --> output/
-                             |              |
-                             v              v
-                      experiments/       app.py --> Gradio Chatbot
-                     (before/after)       (shareable link)
+```mermaid
+flowchart LR
+    A[config.yaml] --> B[finetune.py]
+    D[datasets/*.json] --> B
+    B --> E[output/]
+    B --> F[experiments/]
+    E --> G[app.py]
+    G --> H[Gradio Chatbot\n shareable link]
+
+    style A fill:#ffd966,stroke:#333
+    style D fill:#d9ead3,stroke:#333
+    style H fill:#cfe2f3,stroke:#333
+    style F fill:#f4cccc,stroke:#333
 ```
 
 **The flow:**
@@ -28,6 +32,25 @@ This guide covers the concepts and techniques used in this project. Read this al
 ## Suggested Workflow for Students
 
 Here is a recommended order for exploring this project:
+
+```mermaid
+flowchart TD
+    R1["Round 1\nTry base model\n(python app.py --base)"]
+    R2["Round 2\nFine-tune & compare\n(python finetune.py → app.py)"]
+    R3["Round 3\nChange dataset\n(qa → uvu → cs)"]
+    R4["Round 4\nChange model\n(TinyLlama → Qwen → Gemma)"]
+    R5["Round 5\nTweak settings\n(epochs, LoRA vs full)"]
+    R6["Round 6\nDeploy!\n(upload_model.py → HF Spaces)"]
+
+    R1 --> R2 --> R3 --> R4 --> R5 --> R6
+
+    style R1 fill:#f4cccc,stroke:#333
+    style R2 fill:#fce5cd,stroke:#333
+    style R3 fill:#fff2cc,stroke:#333
+    style R4 fill:#d9ead3,stroke:#333
+    style R5 fill:#cfe2f3,stroke:#333
+    style R6 fill:#d9d2e9,stroke:#333
+```
 
 ### Round 1: See the base model (no training)
 ```bash
@@ -50,6 +73,12 @@ Try a different model (e.g., `Qwen/Qwen3-0.6B` or `google/gemma-4-e2b`). Same da
 
 ### Round 5: Tweak training settings
 Try more epochs, different learning rates, or LoRA vs full fine-tuning. Use the experiment comparison (notebook Step 8) to see what matters most.
+
+### Round 6: Deploy for your portfolio
+```bash
+python upload_model.py
+```
+Push your best model to HuggingFace and create a permanent Space. See the [deployment section](#deploying-your-chatbot-portfolio) below.
 
 ---
 
