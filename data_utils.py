@@ -11,7 +11,7 @@ Think of this as the "kitchen" of our fine-tuning pipeline:
   - We clean, chop, and prepare them (validate, format, tokenize)
   - A ready-to-cook Dataset goes out to the trainer
 
-You typically don't run this file directly — it's imported by train.py.
+You typically don't run this file directly — it's imported by finetune.py.
 But you CAN run it standalone to test your dataset:
   python data_utils.py
 """
