@@ -257,24 +257,63 @@ All of these models can be used by changing the `model.name` field in `config.ya
 
 ---
 
-## LoRA vs Full Fine-Tuning
+## Fine-Tuning Methods: LoRA, QLoRA, and Full
 
-**LoRA (Low-Rank Adaptation)** is a technique that freezes the original model weights and inserts small, trainable adapter layers into the model's attention layers. Instead of updating billions of parameters, you only train a small fraction (typically 1-5%), which makes fine-tuning fast and memory-efficient.
+This project supports different fine-tuning approaches. Understanding the difference is important for choosing the right method for your hardware and goals.
+
+### What is Fine-Tuning?
+
+> **Fine-tuning** takes a pre-trained model (one that already understands language) and trains it further on your specific dataset. Instead of learning language from scratch, the model learns to specialize in your task — like teaching a chef a new recipe instead of teaching them how to cook from zero.
+
+### LoRA (Low-Rank Adaptation)
+
+**LoRA** is a *technique* (not a framework or library) introduced by [Microsoft Research in 2021](https://arxiv.org/abs/2106.09685). It freezes the original model weights and inserts small, trainable matrices into the model's attention layers. Instead of updating billions of parameters, you only train a small fraction (typically 1-5%).
+
+> **How it works:** Imagine the model's knowledge as a huge book. Instead of rewriting the entire book (full fine-tuning), LoRA adds small sticky notes in key places (attention layers) that adjust the model's behavior. The original book stays intact — you only write the sticky notes.
+
+**Read more:** [LoRA: Low-Rank Adaptation of Large Language Models (paper)](https://arxiv.org/abs/2106.09685) | [HuggingFace PEFT docs](https://huggingface.co/docs/peft)
+
+### QLoRA (Quantized LoRA)
+
+**QLoRA** combines LoRA with [quantization](https://huggingface.co/docs/bitsandbytes) — it first compresses the base model to use less memory (4-bit instead of 16-bit), then applies LoRA on top. This lets you fine-tune larger models on less hardware.
+
+> **When to use:** If you want to fine-tune a 7B model (like Mistral) on free Colab, QLoRA makes it possible by reducing the base model's memory footprint by ~4x.
+
+**Read more:** [QLoRA: Efficient Finetuning of Quantized LLMs (paper)](https://arxiv.org/abs/2305.14314) | [bitsandbytes library](https://github.com/bitsandbytes-foundation/bitsandbytes)
+
+### Full Fine-Tuning
+
+**Full fine-tuning** updates *all* parameters in the model. It can produce the best results but requires significantly more GPU memory and time.
+
+> **When to use:** Only if you have access to a powerful GPU (16GB+ VRAM) and want maximum quality. For most student projects, LoRA gives you 90-95% of the quality at a fraction of the cost.
+
+### Comparison Table
 
 You can switch between methods in `config.yaml`:
 
 ```yaml
 training:
-  method: "lora"    # or "full"
+  method: "lora"    # "lora" (recommended) or "full"
 ```
 
-| | LoRA | Full Fine-Tuning |
-|---|---|---|
-| **GPU Memory** | ~4-8 GB | 16+ GB |
-| **Training Speed** | Fast | Slow |
-| **Free Colab?** | Yes | Maybe (small models only) |
-| **Quality** | Very Good | Best |
-| **Recommended** | Yes (default) | Advanced users |
+| | LoRA | QLoRA | Full Fine-Tuning |
+|---|---|---|---|
+| **What it does** | Trains small adapter layers | LoRA + quantized base model | Trains all parameters |
+| **GPU Memory** | ~4-8 GB | ~2-4 GB | 16+ GB |
+| **Training Speed** | Fast | Fast | Slow |
+| **Free Colab?** | Yes | Yes | Maybe (small models only) |
+| **Quality** | Very Good | Good | Best |
+| **Best for** | Most use cases | Large models on limited hardware | Maximum quality |
+| **Recommended** | Yes (default) | Advanced users | Advanced users |
+
+### Key Terminology
+
+| Term | What it is |
+|---|---|
+| **LoRA** | A technique/method — the idea of inserting small trainable matrices |
+| **QLoRA** | A variant of LoRA that adds quantization to save more memory |
+| **PEFT** | The [Python library](https://github.com/huggingface/peft) by HuggingFace that implements LoRA, QLoRA, and other techniques |
+| **bitsandbytes** | The [library](https://github.com/bitsandbytes-foundation/bitsandbytes) that handles quantization (used by QLoRA) |
 
 > **WARNING:** Full fine-tuning requires significantly more GPU memory than LoRA. For a 1B model, expect to need 8-16GB of VRAM. For 3B+ models, you likely need 24GB+. If you run out of memory, switch back to `method: "lora"` in `config.yaml`. Free Google Colab GPUs (T4, ~15GB VRAM) can handle LoRA for all models listed above, but full fine-tuning may only work for the smallest models.
 
