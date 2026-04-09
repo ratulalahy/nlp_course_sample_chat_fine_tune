@@ -48,8 +48,8 @@ If you prefer to run everything on your own machine:
 
 1. **Clone the repository and enter the project folder:**
    ```bash
-   git clone <your-repo-url>
-   cd project_example_1_ft
+   git clone https://github.com/ratulalahy/nlp_course_sample_chat_fine_tune.git
+   cd nlp_course_sample_chat_fine_tune
    ```
 
 2. **Create a virtual environment and install dependencies:**
@@ -76,6 +76,7 @@ If you prefer to run everything on your own machine:
 ## Project Structure
 
 ```
+├── notebook.ipynb           # Step-by-step Colab/local notebook (start here!)
 ├── config.yaml              # All settings — edit this to change models/datasets
 ├── finetune.py              # Fine-tuning script (LoRA + full)
 ├── app.py                   # Gradio chat interface
@@ -102,9 +103,11 @@ Edit config.yaml  -->  Run finetune.py  -->  Run app.py
 
 1. **Edit `config.yaml`** -- This single file controls everything: which base model to fine-tune, which dataset to train on, training method (LoRA or full), number of epochs, batch size, and more. You rarely need to touch any Python code.
 
-2. **Run `finetune.py`** -- This script reads your config, downloads the base model from HuggingFace, loads your dataset, tokenizes it, and trains the model. When it finishes, it saves the fine-tuned model to the `output/` folder along with a metadata file.
+2. **Run `finetune.py`** -- This script reads your config, downloads the base model from HuggingFace, loads your dataset, tokenizes it, and trains the model. It also runs a **baseline test** (before training) and a **post-training test** (after training) so you can see the improvement. Each run is saved to the `experiments/` folder for comparison.
 
 3. **Run `app.py`** -- This script loads your fine-tuned model and launches a Gradio web interface. You get an interactive chatbot with adjustable temperature and max token sliders, plus a shareable public link.
+
+4. **Compare experiments** -- Run multiple experiments with different models, datasets, or settings. Each run is logged automatically. Use the comparison cell in `notebook.ipynb` (Step 7) to view all results side by side.
 
 ---
 
