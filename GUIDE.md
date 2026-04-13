@@ -8,17 +8,39 @@ This guide covers the concepts and techniques used in this project. Read this al
 
 ```mermaid
 flowchart LR
-    A[config.yaml] --> B[finetune.py]
-    D[datasets/*.json] --> B
-    B --> E[output/]
-    B --> F[experiments/]
-    E --> G[app.py]
-    G --> H[Gradio Chatbot\n shareable link]
+    subgraph inputs [" "]
+        A["⚙️ config.yaml\n(model + dataset + settings)"]
+        D["📂 datasets/*.json\n(training data)"]
+    end
 
-    style A fill:#ffd966,stroke:#333
-    style D fill:#d9ead3,stroke:#333
-    style H fill:#cfe2f3,stroke:#333
-    style F fill:#f4cccc,stroke:#333
+    subgraph training [" "]
+        B["🔧 finetune.py"]
+    end
+
+    subgraph outputs [" "]
+        E["💾 output/\n(fine-tuned model)"]
+        F["📊 experiments/\n(before vs after logs)"]
+    end
+
+    subgraph deploy [" "]
+        G["🚀 app.py"]
+        H["💬 Gradio Chatbot\n(shareable link)"]
+    end
+
+    A --> B
+    D --> B
+    B --> E
+    B --> F
+    E --> G
+    G --> H
+
+    style A fill:#ffd966,stroke:#c9a800,color:#333
+    style D fill:#d9ead3,stroke:#6aa84f,color:#333
+    style B fill:#ea9999,stroke:#cc0000,color:#333
+    style E fill:#d0e0e3,stroke:#45818e,color:#333
+    style F fill:#f4cccc,stroke:#cc4125,color:#333
+    style G fill:#b6d7a8,stroke:#6aa84f,color:#333
+    style H fill:#cfe2f3,stroke:#3c78d8,color:#333
 ```
 
 **The flow:**
@@ -35,21 +57,25 @@ Here is a recommended order for exploring this project:
 
 ```mermaid
 flowchart TD
-    R1["Round 1\nTry base model\n(python app.py --base)"]
-    R2["Round 2\nFine-tune & compare\n(python finetune.py → app.py)"]
-    R3["Round 3\nChange dataset\n(qa → uvu → cs)"]
-    R4["Round 4\nChange model\n(TinyLlama → Qwen → Gemma)"]
-    R5["Round 5\nTweak settings\n(epochs, LoRA vs full)"]
-    R6["Round 6\nDeploy!\n(upload_model.py → HF Spaces)"]
+    R1["👀 Round 1: Try base model\npython app.py --base"]
+    R2["🔧 Round 2: Fine-tune & compare\npython finetune.py → app.py"]
+    R3["📂 Round 3: Change dataset\nqa_bot → uvu_bot → cs_assistant"]
+    R4["🤖 Round 4: Change model\nTinyLlama → Qwen → Gemma"]
+    R5["⚡ Round 5: Tweak settings\nepochs · learning rate · LoRA vs full"]
+    R6["🚀 Round 6: Deploy!\nupload_model.py → HF Spaces"]
 
-    R1 --> R2 --> R3 --> R4 --> R5 --> R6
+    R1 -->|"see generic responses"| R2
+    R2 -->|"see the improvement"| R3
+    R3 -->|"how data changes behavior"| R4
+    R4 -->|"how size affects quality"| R5
+    R5 -->|"find best config"| R6
 
-    style R1 fill:#f4cccc,stroke:#333
-    style R2 fill:#fce5cd,stroke:#333
-    style R3 fill:#fff2cc,stroke:#333
-    style R4 fill:#d9ead3,stroke:#333
-    style R5 fill:#cfe2f3,stroke:#333
-    style R6 fill:#d9d2e9,stroke:#333
+    style R1 fill:#f4cccc,stroke:#cc4125,color:#333
+    style R2 fill:#fce5cd,stroke:#e69138,color:#333
+    style R3 fill:#fff2cc,stroke:#f1c232,color:#333
+    style R4 fill:#d9ead3,stroke:#6aa84f,color:#333
+    style R5 fill:#cfe2f3,stroke:#3c78d8,color:#333
+    style R6 fill:#d9d2e9,stroke:#8e7cc3,color:#333
 ```
 
 ### Round 1: See the base model (no training)
