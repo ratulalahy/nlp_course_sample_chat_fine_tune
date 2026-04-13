@@ -260,6 +260,11 @@ Anyone with the link can try your chatbot. The link stays active for **72 hours*
 
 **How it works:** Your fine-tuned model is loaded from `output/` on your machine (or Colab). Gradio creates a tunnel so others can access it through the public URL. When you stop the script, the link dies.
 
+**Learn more:**
+- [Sharing Your App — Gradio official guide](https://www.gradio.app/guides/sharing-your-app)
+- [Understanding Gradio Share Links](https://www.gradio.app/guides/understanding-gradio-share-links)
+- [Creating a Chatbot Fast — Gradio guide](https://www.gradio.app/guides/creating-a-chatbot-fast)
+
 ---
 
 ### Option B: Permanent Deployment on HuggingFace Spaces
@@ -334,6 +339,14 @@ import setup  # Downloads model from HuggingFace Hub on first run
 - Model page: `https://huggingface.co/your-username/your-model-name`
 - Chatbot: `https://huggingface.co/spaces/your-username/my-qa-chatbot`
 - Both are public and can go on your resume
+
+**Learn more:**
+- [Uploading Models to HuggingFace Hub — official docs](https://huggingface.co/docs/hub/en/models-uploading)
+- [Sharing Models with push_to_hub — Transformers docs](https://huggingface.co/docs/transformers/model_sharing)
+- [Upload Files to the Hub — huggingface_hub guide](https://huggingface.co/docs/huggingface_hub/guides/upload)
+- [Gradio Spaces — official HuggingFace docs](https://huggingface.co/docs/hub/en/spaces-sdks-gradio)
+- [Deploy Gradio Apps on HuggingFace Spaces — PyImageSearch tutorial](https://pyimagesearch.com/2024/12/30/deploy-gradio-apps-on-hugging-face-spaces/)
+- [Using HuggingFace Integrations — Gradio guide](https://www.gradio.app/guides/using-hugging-face-integrations)
 
 ---
 
