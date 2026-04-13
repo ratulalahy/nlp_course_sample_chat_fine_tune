@@ -18,17 +18,39 @@ Welcome! In this project, you will fine-tune a small language model on a dataset
 
 ```mermaid
 flowchart LR
-    A[config.yaml] --> B[finetune.py]
-    D[datasets/*.json] --> B
-    B --> E[output/]
-    B --> F[experiments/]
-    E --> G[app.py]
-    G --> H[Gradio Chatbot\n shareable link]
+    subgraph inputs [" "]
+        A["⚙️ config.yaml\n(model + dataset + settings)"]
+        D["📂 datasets/*.json\n(training data)"]
+    end
 
-    style A fill:#ffd966,stroke:#333
-    style D fill:#d9ead3,stroke:#333
-    style H fill:#cfe2f3,stroke:#333
-    style F fill:#f4cccc,stroke:#333
+    subgraph training [" "]
+        B["🔧 finetune.py"]
+    end
+
+    subgraph outputs [" "]
+        E["💾 output/\n(fine-tuned model)"]
+        F["📊 experiments/\n(before vs after logs)"]
+    end
+
+    subgraph deploy [" "]
+        G["🚀 app.py"]
+        H["💬 Gradio Chatbot\n(shareable link)"]
+    end
+
+    A --> B
+    D --> B
+    B --> E
+    B --> F
+    E --> G
+    G --> H
+
+    style A fill:#ffd966,stroke:#c9a800,color:#333
+    style D fill:#d9ead3,stroke:#6aa84f,color:#333
+    style B fill:#ea9999,stroke:#cc0000,color:#333
+    style E fill:#d0e0e3,stroke:#45818e,color:#333
+    style F fill:#f4cccc,stroke:#cc4125,color:#333
+    style G fill:#b6d7a8,stroke:#6aa84f,color:#333
+    style H fill:#cfe2f3,stroke:#3c78d8,color:#333
 ```
 
 | Step | What happens |
