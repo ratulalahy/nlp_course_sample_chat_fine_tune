@@ -1,0 +1,89 @@
+============================================================
+  FINE-TUNING SCRIPT
+  Reading all settings from config.yaml
+============================================================
+
+  Model:   Qwen/Qwen3-0.6B
+  Method:  lora
+  Epochs:  1
+  Output:  output/
+
+Loaded 50 examples from 'datasets/uvu_bot.json'
+  Loaded 50 training examples
+  First example:
+    Instruction: What is Utah Valley University?...
+    Response:    Utah Valley University (UVU) is a public university located in Orem, Utah. It is...
+
+  Device:  mps
+  Dtype:   torch.float32
+  Loading tokenizer...
+  Loading model... (this may take a minute the first time)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   0%|          | 1/311 [00:01<08:53,  1.72s/it]Loading weights:   1%|          | 2/311 [00:01<03:57,  1.30it/s]Loading weights:  27%|██▋       | 83/311 [00:01<00:02, 80.98it/s]Loading weights:  55%|█████▍    | 170/311 [00:02<00:00, 178.17it/s]Loading weights:  73%|███████▎  | 227/311 [00:02<00:00, 225.54it/s]Loading weights: 100%|██████████| 311/311 [00:02<00:00, 138.36it/s]
+  Model loaded: Qwen/Qwen3-0.6B
+  Total parameters: 596,049,920
+  Model size (approx): 1.19 GB (float16)
+
+  Running baseline test (before fine-tuning)...
+    Q: What is Utah Valley University?...
+    A: State the definition of Utah Valley University (UVU), and explain its significan...
+
+    Q: Where is UVU located?...
+    A: I am not the one to answer the question. I am here to help you with your questio...
+
+    Q: How do I apply to UVU?...
+    A: Let me know, I can help with that. You can contact me through the contact page o...
+
+  Tokenizing dataset...
+Tokenized 50 examples (max_length=512)
+  Dataset ready: 50 tokenized examples
+
+  Setting up LoRA (Low-Rank Adaptation)...
+  Auto-selecting target_modules: ['q_proj', 'v_proj']
+trainable params: 1,146,880 || all params: 597,196,800 || trainable%: 0.1920
+
+  Starting training...
+  (You'll see the loss decrease over time -- that means it's learning!)
+
+  0%|          | 0/25 [00:00<?, ?it/s]  4%|▍         | 1/25 [00:04<01:57,  4.92s/it]  8%|▊         | 2/25 [00:07<01:24,  3.67s/it] 12%|█▏        | 3/25 [00:09<01:06,  3.01s/it] 16%|█▌        | 4/25 [00:12<00:57,  2.72s/it] 20%|██        | 5/25 [00:14<00:50,  2.50s/it] 24%|██▍       | 6/25 [00:16<00:45,  2.40s/it] 28%|██▊       | 7/25 [00:19<00:46,  2.59s/it] 32%|███▏      | 8/25 [00:21<00:41,  2.44s/it] 36%|███▌      | 9/25 [00:23<00:37,  2.37s/it] 40%|████      | 10/25 [00:26<00:34,  2.31s/it]                                               {'loss': '8.062', 'grad_norm': '29.59', 'learning_rate': '0.000128', 'epoch': '0.4'}
+ 40%|████      | 10/25 [00:26<00:34,  2.31s/it] 44%|████▍     | 11/25 [00:28<00:32,  2.32s/it] 48%|████▊     | 12/25 [00:30<00:29,  2.29s/it] 52%|█████▏    | 13/25 [00:34<00:31,  2.63s/it] 56%|█████▌    | 14/25 [00:36<00:29,  2.70s/it] 60%|██████    | 15/25 [00:40<00:28,  2.89s/it] 64%|██████▍   | 16/25 [00:51<00:48,  5.37s/it] 68%|██████▊   | 17/25 [00:57<00:45,  5.74s/it] 72%|███████▏  | 18/25 [01:00<00:34,  4.87s/it] 76%|███████▌  | 19/25 [01:04<00:26,  4.41s/it] 80%|████████  | 20/25 [01:06<00:18,  3.75s/it]                                               {'loss': '1.907', 'grad_norm': '9.111', 'learning_rate': '4.8e-05', 'epoch': '0.8'}
+ 80%|████████  | 20/25 [01:06<00:18,  3.75s/it] 84%|████████▍ | 21/25 [01:08<00:13,  3.33s/it] 88%|████████▊ | 22/25 [01:11<00:09,  3.08s/it] 92%|█████████▏| 23/25 [01:13<00:05,  2.82s/it] 96%|█████████▌| 24/25 [01:15<00:02,  2.74s/it]100%|██████████| 25/25 [01:18<00:00,  2.68s/it]                                               {'train_runtime': '79.82', 'train_samples_per_second': '0.626', 'train_steps_per_second': '0.313', 'train_loss': '4.09', 'epoch': '1'}
+100%|██████████| 25/25 [01:19<00:00,  2.68s/it]100%|██████████| 25/25 [01:19<00:00,  3.19s/it]
+
+  Training complete! Duration: 1m 19s
+
+  Saving model to output/...
+  Saved LoRA adapter weights
+  Saved tokenizer
+  Saved training metadata to output/training_info.json
+
+  Running post-training test (after fine-tuning)...
+    Q: What is Utah Valley University?...
+    A: Utah Valley University is a public institution located in...
+
+    Q: Where is UVU located?...
+    A: UVU is a small community located in the central part of the city. The community ...
+
+    Q: How do I apply to UVU?...
+    A: ...
+
+  Experiment saved to experiments/20260415_222920_Qwen3-0.6B_uvu_bot_lora.json
+  Compare with past experiments in the experiments/ folder!
+
+============================================================
+  TRAINING COMPLETE!
+============================================================
+  Model:          Qwen/Qwen3-0.6B
+  Method:         lora
+  Epochs:         1
+  Final Loss:     4.0897
+  Training Time:  1m 19s
+  Saved To:       output/
+  Experiment Log: experiments/20260415_222920_Qwen3-0.6B_uvu_bot_lora.json
+
+  NEXT STEPS:
+  1. Run the chatbot:  python app.py
+  2. Chat with your fine-tuned model!
+  3. Share the Gradio link for your portfolio
+============================================================

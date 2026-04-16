@@ -1,0 +1,53 @@
+============================================================
+  FINE-TUNING SCRIPT
+  Reading all settings from config.yaml
+============================================================
+
+  Model:   TinyLlama/TinyLlama-1.1B-Chat-v1.0
+  Method:  lora
+  Epochs:  1
+  Output:  output/
+
+Loaded 50 examples from 'datasets/qa_bot.json'
+  Loaded 50 training examples
+  First example:
+    Instruction: What is photosynthesis?...
+    Response:    Photosynthesis is the process by which green plants convert sunlight, water, and...
+
+  Loading tokenizer...
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  Loading model... (this may take a minute the first time)
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights:   0%|          | 1/201 [00:00<01:17,  2.58it/s]Loading weights:   6%|▋         | 13/201 [00:00<00:05, 32.08it/s]Loading weights:  11%|█         | 22/201 [00:00<00:03, 44.78it/s]Loading weights:  15%|█▌        | 31/201 [00:00<00:03, 55.59it/s]Loading weights:  20%|█▉        | 40/201 [00:00<00:02, 63.05it/s]Loading weights:  24%|██▍       | 49/201 [00:00<00:02, 67.87it/s]Loading weights:  29%|██▉       | 58/201 [00:01<00:02, 68.67it/s]Loading weights:  35%|███▌      | 71/201 [00:01<00:01, 84.95it/s]Loading weights:  42%|████▏     | 85/201 [00:01<00:01, 82.27it/s]Loading weights:  51%|█████     | 103/201 [00:01<00:01, 87.18it/s]Loading weights:  56%|█████▌    | 113/201 [00:01<00:00, 89.50it/s]Loading weights:  61%|██████    | 123/201 [00:01<00:00, 88.37it/s]Loading weights:  66%|██████▌   | 133/201 [00:01<00:00, 88.47it/s]Loading weights:  71%|███████   | 142/201 [00:01<00:00, 88.29it/s]Loading weights:  78%|███████▊  | 157/201 [00:02<00:00, 91.02it/s]Loading weights: 100%|██████████| 201/201 [00:02<00:00, 90.15it/s]
+  Model loaded: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+  Total parameters: 1,100,048,384
+  Model size (approx): 2.20 GB (float16)
+
+  Running baseline test (before fine-tuning)...
+Both `max_new_tokens` (=100) and `max_length`(=2048) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+    Q: What is photosynthesis?...
+    A: Photosynthesis is the process by which plants and some algae produce food from l...
+
+Both `max_new_tokens` (=100) and `max_length`(=2048) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+    Q: How far is the Moon from Earth?...
+    A: The Moon is approximately 384,900 kilometers (24 response) from Earth. ### User:...
+
+Both `max_new_tokens` (=100) and `max_length`(=2048) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+    Q: What causes earthquakes?...
+    A: Earthquakes are caused by the compression of the earth's crust. The crust is mad...
+
+  Tokenizing dataset...
+Tokenized 50 examples (max_length=512)
+  Dataset ready: 50 tokenized examples
+
+  Setting up LoRA (Low-Rank Adaptation)...
+  Auto-selecting target_modules: ['q_proj', 'v_proj']
+trainable params: 1,126,400 || all params: 1,101,174,784 || trainable%: 0.1023
+
+  Starting training...
+  (You'll see the loss decrease over time -- that means it's learning!)
+
+  0%|          | 0/13 [00:00<?, ?it/s]/Users/qratul/uvu/courses/nlp/project_example_1_ft/venv/lib/python3.11/site-packages/torch/utils/data/dataloader.py:775: UserWarning: 'pin_memory' argument is set as true but not supported on MPS now, device pinned memory won't be used.
+  super().__init__(loader)
+  8%|▊         | 1/13 [00:37<07:27, 37.25s/it] 15%|█▌        | 2/13 [09:55<1:02:58, 343.52s/it]/Users/qratul/anaconda3/lib/python3.11/multiprocessing/resource_tracker.py:224: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

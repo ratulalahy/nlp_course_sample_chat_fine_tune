@@ -91,6 +91,23 @@ def main():
     # "starting point" -- a model that already knows language but hasn't been
     # specialized for our task yet. Fine-tuning will teach it our data.
 
+    # Detect the best available device for training:
+    #   "cuda" = NVIDIA GPU (fastest, available on Google Colab)
+    #   "mps"  = Apple Silicon GPU (Mac M1/M2/M3/M4, decent speed)
+    #   "cpu"  = No GPU (slowest, but always works)
+    if torch.cuda.is_available():
+        device = "cuda"
+    elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+        device = "mps"
+    else:
+        device = "cpu"
+
+    # Use float32 on MPS/CPU (float16 is only well-supported on CUDA)
+    use_dtype = torch.float16 if device == "cuda" else torch.float32
+
+    print(f"  Device:  {device}")
+    print(f"  Dtype:   {use_dtype}")
+
     print("  Loading tokenizer...")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -104,8 +121,8 @@ def main():
     print("  Loading model... (this may take a minute the first time)")
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        torch_dtype=torch.float16,         # Use half-precision to save memory
-        device_map="auto",                 # Automatically use GPU if available
+        dtype=use_dtype,                   # float16 on CUDA, float32 on MPS/CPU
+        device_map=device,                 # Use best available device
     )
 
     # Print model size so students can see how big it is.
@@ -113,7 +130,9 @@ def main():
     total_params = sum(p.numel() for p in model.parameters())
     print(f"  Model loaded: {model_name}")
     print(f"  Total parameters: {total_params:,}")
-    print(f"  Model size (approx): {total_params * 2 / 1e9:.2f} GB (float16)")
+    dtype_bytes = 2 if use_dtype == torch.float16 else 4
+    dtype_label = "float16" if use_dtype == torch.float16 else "float32"
+    print(f"  Model size (approx): {total_params * dtype_bytes / 1e9:.2f} GB ({dtype_label})")
     print()
 
     # ========================================================================
@@ -149,6 +168,8 @@ def main():
                 pad_token_id=tokenizer.eos_token_id,
             )
         response = tokenizer.decode(outputs[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True).strip()
+        if "### User:" in response:
+            response = response.split("### User:")[0].strip()
         baseline_results.append({"question": question, "response": response})
         print(f"    Q: {question[:60]}...")
         print(f"    A: {response[:80]}...")
@@ -239,9 +260,10 @@ def main():
         learning_rate=config["training"]["learning_rate"],      # Step size for optimizer
         logging_steps=config["training"]["logging_steps"],      # Print loss every N steps
         save_strategy="epoch",                                  # Save a checkpoint each epoch
-        fp16=torch.cuda.is_available(),                         # Use half-precision on GPU
+        fp16=(device == "cuda"),                                # Half-precision only on NVIDIA GPU
         report_to="none",                                       # Don't log to wandb/tensorboard
         remove_unused_columns=False,                            # Keep all dataset columns
+        dataloader_pin_memory=(device == "cuda"),               # pin_memory only works on CUDA
     )
 
     # ========================================================================
@@ -347,6 +369,8 @@ def main():
                 pad_token_id=tokenizer.eos_token_id,
             )
         response = tokenizer.decode(outputs[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True).strip()
+        if "### User:" in response:
+            response = response.split("### User:")[0].strip()
         after_results.append({"question": question, "response": response})
         print(f"    Q: {question[:60]}...")
         print(f"    A: {response[:80]}...")

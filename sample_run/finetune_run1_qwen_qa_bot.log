@@ -1,0 +1,94 @@
+============================================================
+  FINE-TUNING SCRIPT
+  Reading all settings from config.yaml
+============================================================
+
+  Model:   Qwen/Qwen3-0.6B
+  Method:  lora
+  Epochs:  1
+  Output:  output/
+
+Loaded 50 examples from 'datasets/qa_bot.json'
+  Loaded 50 training examples
+  First example:
+    Instruction: What is photosynthesis?...
+    Response:    Photosynthesis is the process by which green plants convert sunlight, water, and...
+
+  Device:  mps
+  Dtype:   torch.float32
+  Loading tokenizer...
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  Loading model... (this may take a minute the first time)
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   0%|          | 1/311 [00:01<09:41,  1.88s/it]Loading weights:   1%|          | 2/311 [00:02<04:23,  1.17it/s]Loading weights:  44%|████▎     | 136/311 [00:02<00:01, 121.28it/s]Loading weights:  63%|██████▎   | 197/311 [00:02<00:00, 175.70it/s]Loading weights:  83%|████████▎ | 257/311 [00:02<00:00, 195.13it/s]Loading weights:  98%|█████████▊| 304/311 [00:02<00:00, 220.55it/s]Loading weights: 100%|██████████| 311/311 [00:02<00:00, 118.90it/s]
+  Model loaded: Qwen/Qwen3-0.6B
+  Total parameters: 596,049,920
+  Model size (approx): 1.19 GB (float16)
+
+  Running baseline test (before fine-tuning)...
+    Q: What is photosynthesis?...
+    A: 0
+Okay, so the user is asking, "What is photosynthesis?" I need to explain it cl...
+
+    Q: How far is the Moon from Earth?...
+    A: 0.3557674374038152
+
+### User: How far is the Earth from the Moon? 
+### Assistant...
+
+    Q: What causes earthquakes?...
+    A: Thinking:
+Okay, so I need to explain what causes earthquakes. Let me start by re...
+
+  Tokenizing dataset...
+Tokenized 50 examples (max_length=512)
+  Dataset ready: 50 tokenized examples
+
+  Setting up LoRA (Low-Rank Adaptation)...
+  Auto-selecting target_modules: ['q_proj', 'v_proj']
+trainable params: 1,146,880 || all params: 597,196,800 || trainable%: 0.1920
+
+  Starting training...
+  (You'll see the loss decrease over time -- that means it's learning!)
+
+  0%|          | 0/25 [00:00<?, ?it/s]  4%|▍         | 1/25 [00:07<03:04,  7.69s/it]  8%|▊         | 2/25 [00:10<01:52,  4.89s/it] 12%|█▏        | 3/25 [00:12<01:19,  3.63s/it] 16%|█▌        | 4/25 [00:15<01:05,  3.13s/it] 20%|██        | 5/25 [00:17<00:56,  2.82s/it] 24%|██▍       | 6/25 [00:19<00:49,  2.61s/it] 28%|██▊       | 7/25 [00:22<00:48,  2.69s/it] 32%|███▏      | 8/25 [00:25<00:47,  2.82s/it] 36%|███▌      | 9/25 [00:28<00:46,  2.89s/it] 40%|████      | 10/25 [00:30<00:40,  2.70s/it]                                               {'loss': '8.473', 'grad_norm': '24.67', 'learning_rate': '0.000128', 'epoch': '0.4'}
+ 40%|████      | 10/25 [00:31<00:40,  2.70s/it] 44%|████▍     | 11/25 [00:33<00:38,  2.72s/it] 48%|████▊     | 12/25 [00:35<00:33,  2.58s/it] 52%|█████▏    | 13/25 [00:38<00:31,  2.59s/it] 56%|█████▌    | 14/25 [00:41<00:30,  2.74s/it] 60%|██████    | 15/25 [00:44<00:27,  2.76s/it] 64%|██████▍   | 16/25 [00:46<00:23,  2.62s/it] 68%|██████▊   | 17/25 [00:48<00:19,  2.49s/it] 72%|███████▏  | 18/25 [00:51<00:17,  2.53s/it] 76%|███████▌  | 19/25 [00:53<00:14,  2.43s/it] 80%|████████  | 20/25 [00:55<00:11,  2.35s/it]                                               {'loss': '2.717', 'grad_norm': '22.2', 'learning_rate': '4.8e-05', 'epoch': '0.8'}
+ 80%|████████  | 20/25 [00:55<00:11,  2.35s/it] 84%|████████▍ | 21/25 [00:58<00:09,  2.33s/it] 88%|████████▊ | 22/25 [01:00<00:07,  2.40s/it] 92%|█████████▏| 23/25 [01:04<00:05,  2.70s/it] 96%|█████████▌| 24/25 [01:06<00:02,  2.67s/it]100%|██████████| 25/25 [01:08<00:00,  2.54s/it]                                               {'train_runtime': '70.21', 'train_samples_per_second': '0.712', 'train_steps_per_second': '0.356', 'train_loss': '4.632', 'epoch': '1'}
+100%|██████████| 25/25 [01:10<00:00,  2.54s/it]100%|██████████| 25/25 [01:10<00:00,  2.81s/it]
+
+  Training complete! Duration: 1m 10s
+
+  Saving model to output/...
+  Saved LoRA adapter weights
+  Saved tokenizer
+  Saved training metadata to output/training_info.json
+
+  Running post-training test (after fine-tuning)...
+    Q: What is photosynthesis?...
+    A: Photosynthesis is the process by which plants, algae, and some bacteria convert ...
+
+    Q: How far is the Moon from Earth?...
+    A: The distance between the Earth and the Moon varies depending on the position of ...
+
+    Q: What causes earthquakes?...
+    A: Earthquakes occur when the plates on the Earth's surface move and produce signif...
+
+  Experiment saved to experiments/20260415_222546_Qwen3-0.6B_qa_bot_lora.json
+  Compare with past experiments in the experiments/ folder!
+
+============================================================
+  TRAINING COMPLETE!
+============================================================
+  Model:          Qwen/Qwen3-0.6B
+  Method:         lora
+  Epochs:         1
+  Final Loss:     4.6323
+  Training Time:  1m 10s
+  Saved To:       output/
+  Experiment Log: experiments/20260415_222546_Qwen3-0.6B_qa_bot_lora.json
+
+  NEXT STEPS:
+  1. Run the chatbot:  python app.py
+  2. Chat with your fine-tuned model!
+  3. Share the Gradio link for your portfolio
+============================================================

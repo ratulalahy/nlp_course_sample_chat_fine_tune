@@ -1,0 +1,13 @@
+============================================================
+  UPLOAD FINE-TUNED MODEL TO HUGGINGFACE HUB
+============================================================
+
+  Found model in: output/
+  Base model: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+  Method: lora
+
+  Will upload to: https://huggingface.co/test_student/my-cs-bot
+
+  --dry-run: Skipping actual upload. Everything looks ready!
+  To upload for real, run:
+    python upload_model.py --username test_student --name my-cs-bot

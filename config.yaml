@@ -3,6 +3,10 @@
 # =============================================================================
 # This file controls everything: which model to fine-tune, which dataset to use,
 # and all training parameters. Students: just change the settings below and run!
+#
+# QUICK SETUP — pick your environment:
+#   LOCAL (Mac/laptop):  Use Qwen3-0.6B, batch_size: 2, epochs: 1
+#   COLAB (T4 GPU):      Use TinyLlama or Gemma, batch_size: 4, epochs: 3
 # =============================================================================
 
 # =============================================================================
@@ -18,7 +22,7 @@ model:
   # name: "meta-llama/Llama-3.2-1B-Instruct"      # 1B, Meta's smallest
 
   # ---- Medium models (need free Colab GPU with LoRA) ----
-  # name: "google/gemma-4-e2b"                     # ~2B effective, newest (Apr 2026)
+  # name: "google/gemma-4-e2b"                     # 5B params (~10GB), Colab GPU only
   # name: "google/gemma-4-e4b"                     # ~4B effective, great balance
   # name: "microsoft/Phi-3.5-mini-instruct"        # 3.8B, strong reasoning
   # name: "meta-llama/Llama-3.2-3B-Instruct"      # 3B, Meta

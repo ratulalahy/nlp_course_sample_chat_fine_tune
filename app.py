@@ -27,9 +27,11 @@ import gradio as gr
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
 
-# Check if user wants to run the base model (before fine-tuning)
-# Usage: python app.py --base
+# Check command-line flags:
+#   --base  : Use the base model (before fine-tuning) for comparison
+#   --share : Create a public Gradio link (great for portfolio demos)
 USE_BASE_MODEL = "--base" in sys.argv
+USE_SHARE = "--share" in sys.argv
 
 # =============================================================================
 # STEP 2: LOAD CONFIGURATION AND TRAINING METADATA
@@ -43,10 +45,20 @@ with open("config.yaml", "r") as f:
 
 output_dir = config["training"]["output_dir"]  # e.g. "output/"
 
-# Pick the best available device: GPU if you have one, otherwise CPU.
-# On Google Colab with a T4 GPU, this will select "cuda".
-device = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using device: {device}")
+# Pick the best available device:
+#   "cuda" = NVIDIA GPU (fastest, Google Colab)
+#   "mps"  = Apple Silicon GPU (Mac M1/M2/M3/M4)
+#   "cpu"  = No GPU (slowest, but always works)
+if torch.cuda.is_available():
+    device = "cuda"
+elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+    device = "mps"
+else:
+    device = "cpu"
+
+# Use float32 on MPS/CPU for stability; float16 on CUDA for speed
+model_dtype = torch.float16 if device == "cuda" else torch.float32
+print(f"Using device: {device} (dtype: {model_dtype})")
 
 if USE_BASE_MODEL:
     # --- BASE MODEL MODE ---
@@ -104,7 +116,7 @@ if USE_BASE_MODEL:
     print(f"Loading base model: {base_model_name}")
     tokenizer = AutoTokenizer.from_pretrained(base_model_name)
     model = AutoModelForCausalLM.from_pretrained(
-        base_model_name, dtype=torch.float16, device_map=device
+        base_model_name, dtype=model_dtype, device_map=device
     )
 else:
     method = training_info.get("method", "lora")
@@ -117,16 +129,21 @@ else:
         # then layer the small LoRA adapter weights on top.
         print(f"Loading base model: {base_model_name}")
         base_model = AutoModelForCausalLM.from_pretrained(
-            base_model_name, dtype=torch.float16, device_map=device
+            base_model_name, dtype=model_dtype, device_map=device
         )
-        # PeftModel.from_pretrained merges the adapter into the base model
+        # PeftModel.from_pretrained loads the LoRA adapter on top of the base model.
+        # merge_and_unload() folds the adapter weights into the base model for
+        # faster and more reliable inference (avoids issues with some model architectures).
         print(f"Loading LoRA adapter from: {output_dir}")
-        model = PeftModel.from_pretrained(base_model, output_dir)
+        peft_model = PeftModel.from_pretrained(base_model, output_dir)
+        model = peft_model.merge_and_unload()
+        model = model.to(device)  # Ensure model is on the correct device
+        print("Merged LoRA adapter into base model")
     else:
         # For full fine-tuning, the whole model lives in output_dir
         print(f"Loading fully fine-tuned model from: {output_dir}")
         model = AutoModelForCausalLM.from_pretrained(
-            output_dir, dtype=torch.float16, device_map=device
+            output_dir, dtype=model_dtype, device_map=device
         )
 
 # Set pad_token if needed (common fix for many models)
@@ -144,7 +161,7 @@ print("Model loaded successfully!")
 # =============================================================================
 
 
-def chat(message, history, temperature, max_tokens):
+def chat(message, history, temperature=0.7, max_tokens=200):
     """
     Generate a response to the user's message.
 
@@ -169,7 +186,8 @@ def chat(message, history, temperature, max_tokens):
     prompt += f"### User: {message}\n### Assistant:"
 
     # --- Tokenize the prompt and send it to the model's device ---
-    inputs = tokenizer(prompt, return_tensors="pt").to(device)
+    model_device = next(model.parameters()).device
+    inputs = tokenizer(prompt, return_tensors="pt").to(model_device)
 
     # --- Generate a response ---
     # We use torch.no_grad() because we're only doing inference (no training).
@@ -178,11 +196,12 @@ def chat(message, history, temperature, max_tokens):
         outputs = model.generate(
             **inputs,
             max_new_tokens=int(max_tokens),
+            min_new_tokens=5,        # Force at least a few tokens (avoids early EOS)
             temperature=float(temperature),
             do_sample=True,          # Enable sampling (needed for temperature)
             top_p=0.9,               # Nucleus sampling for quality
             repetition_penalty=1.1,  # Discourage repetitive text
-            pad_token_id=tokenizer.eos_token_id,  # Avoid padding warnings
+            pad_token_id=tokenizer.pad_token_id,  # Avoid padding warnings
         )
 
     # --- Decode and extract only the NEW assistant response ---
@@ -190,6 +209,9 @@ def chat(message, history, temperature, max_tokens):
     # slice off the prompt tokens to get just the generated part.
     new_tokens = outputs[0][inputs["input_ids"].shape[1]:]
     response = tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+    # Some models may generate trailing "### User:" for the next turn — strip it
+    if "### User:" in response:
+        response = response.split("### User:")[0].strip()
 
     return response
 
@@ -220,7 +242,6 @@ else:
 # Create the chat interface with adjustable generation settings
 demo = gr.ChatInterface(
     fn=chat,
-    type="messages",  # Modern format: list of {"role": ..., "content": ...} dicts
     title=title,
     description=description,
     # Example prompts so users can try the bot right away
@@ -242,6 +263,7 @@ demo = gr.ChatInterface(
 )
 
 # Launch the app!
-# share=True creates a temporary public URL (great for portfolio demos).
+# --share creates a temporary public URL (great for portfolio demos).
 # Anyone with the link can try your chatbot for 72 hours.
-demo.launch(share=True)
+# Without --share, it runs locally at http://127.0.0.1:7860
+demo.launch(share=USE_SHARE)

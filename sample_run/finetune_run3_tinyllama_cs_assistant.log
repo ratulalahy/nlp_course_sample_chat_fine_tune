@@ -1,0 +1,95 @@
+============================================================
+  FINE-TUNING SCRIPT
+  Reading all settings from config.yaml
+============================================================
+
+  Model:   TinyLlama/TinyLlama-1.1B-Chat-v1.0
+  Method:  lora
+  Epochs:  1
+  Output:  output/
+
+Loaded 50 examples from 'datasets/cs_assistant.json'
+  Loaded 50 training examples
+  First example:
+    Instruction: What is an array?...
+    Response:    An array is a data structure that stores a fixed-size collection of elements of ...
+
+  Device:  mps
+  Dtype:   torch.float32
+  Loading tokenizer...
+  Loading model... (this may take a minute the first time)
+`torch_dtype` is deprecated! Use `dtype` instead!
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights:   0%|          | 1/201 [00:01<06:17,  1.89s/it]Loading weights:   4%|▍         | 9/201 [00:02<00:31,  6.06it/s]Loading weights:  11%|█         | 22/201 [00:02<00:10, 16.62it/s]Loading weights:  20%|█▉        | 40/201 [00:02<00:04, 33.14it/s]Loading weights:  25%|██▍       | 50/201 [00:02<00:03, 41.61it/s]Loading weights:  30%|██▉       | 60/201 [00:02<00:03, 42.02it/s]Loading weights:  34%|███▍      | 69/201 [00:02<00:02, 49.12it/s]Loading weights:  38%|███▊      | 77/201 [00:02<00:02, 51.28it/s]Loading weights:  42%|████▏     | 85/201 [00:03<00:02, 52.42it/s]Loading weights:  47%|████▋     | 94/201 [00:03<00:02, 49.57it/s]Loading weights:  51%|█████     | 103/201 [00:03<00:02, 45.73it/s]Loading weights:  56%|█████▌    | 112/201 [00:03<00:01, 46.09it/s]Loading weights:  60%|██████    | 121/201 [00:03<00:01, 41.19it/s]Loading weights:  65%|██████▍   | 130/201 [00:04<00:01, 44.68it/s]Loading weights:  69%|██████▉   | 139/201 [00:04<00:01, 50.18it/s]Loading weights:  74%|███████▎  | 148/201 [00:04<00:01, 48.83it/s]Loading weights:  83%|████████▎ | 166/201 [00:04<00:00, 60.45it/s]Loading weights:  87%|████████▋ | 175/201 [00:04<00:00, 61.35it/s]Loading weights:  92%|█████████▏| 184/201 [00:04<00:00, 63.58it/s]Loading weights:  96%|█████████▌| 193/201 [00:04<00:00, 66.66it/s]Loading weights: 100%|██████████| 201/201 [00:05<00:00, 40.10it/s]
+  Model loaded: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+  Total parameters: 1,100,048,384
+  Model size (approx): 2.20 GB (float16)
+
+  Running baseline test (before fine-tuning)...
+Both `max_new_tokens` (=100) and `max_length`(=2048) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+    Q: What is an array?...
+    A: An array is a collection of related data. In an array, you can store multiple va...
+
+Both `max_new_tokens` (=100) and `max_length`(=2048) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+    Q: What is a linked list?...
+    A: A linked list is a data structure in which elements are linked together as a cha...
+
+Both `max_new_tokens` (=100) and `max_length`(=2048) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+    Q: What is the difference between a singly linked list and a do...
+    A: A singly linked list is a type of linked list where each node is associated with...
+
+  Tokenizing dataset...
+Tokenized 50 examples (max_length=512)
+  Dataset ready: 50 tokenized examples
+
+  Setting up LoRA (Low-Rank Adaptation)...
+  Auto-selecting target_modules: ['q_proj', 'v_proj']
+trainable params: 1,126,400 || all params: 1,101,174,784 || trainable%: 0.1023
+
+  Starting training...
+  (You'll see the loss decrease over time -- that means it's learning!)
+
+  0%|          | 0/25 [00:00<?, ?it/s]  4%|▍         | 1/25 [00:06<02:40,  6.70s/it]  8%|▊         | 2/25 [00:09<01:37,  4.23s/it] 12%|█▏        | 3/25 [00:15<01:50,  5.03s/it] 16%|█▌        | 4/25 [04:10<33:34, 95.93s/it] 20%|██        | 5/25 [04:13<20:50, 62.55s/it] 24%|██▍       | 6/25 [04:16<13:20, 42.16s/it] 28%|██▊       | 7/25 [04:19<08:51, 29.53s/it] 32%|███▏      | 8/25 [04:23<05:59, 21.18s/it] 36%|███▌      | 9/25 [04:26<04:09, 15.57s/it] 40%|████      | 10/25 [04:30<02:58, 11.90s/it]                                               {'loss': '7.529', 'grad_norm': '26.81', 'learning_rate': '0.000128', 'epoch': '0.4'}
+ 40%|████      | 10/25 [04:30<02:58, 11.90s/it] 44%|████▍     | 11/25 [04:33<02:11,  9.40s/it] 48%|████▊     | 12/25 [04:37<01:40,  7.71s/it] 52%|█████▏    | 13/25 [04:41<01:18,  6.53s/it] 56%|█████▌    | 14/25 [04:45<01:02,  5.68s/it] 60%|██████    | 15/25 [04:48<00:50,  5.08s/it] 64%|██████▍   | 16/25 [04:52<00:41,  4.57s/it] 68%|██████▊   | 17/25 [04:57<00:38,  4.76s/it] 72%|███████▏  | 18/25 [05:29<01:31, 13.00s/it] 76%|███████▌  | 19/25 [05:34<01:03, 10.67s/it] 80%|████████  | 20/25 [05:38<00:42,  8.43s/it]                                               {'loss': '1.572', 'grad_norm': '5.974', 'learning_rate': '4.8e-05', 'epoch': '0.8'}
+ 80%|████████  | 20/25 [05:38<00:42,  8.43s/it] 84%|████████▍ | 21/25 [05:42<00:28,  7.10s/it] 88%|████████▊ | 22/25 [05:47<00:19,  6.49s/it] 92%|█████████▏| 23/25 [06:33<00:36, 18.35s/it] 96%|█████████▌| 24/25 [07:25<00:28, 28.58s/it]100%|██████████| 25/25 [07:31<00:00, 21.66s/it]                                               {'train_runtime': '455.1', 'train_samples_per_second': '0.11', 'train_steps_per_second': '0.055', 'train_loss': '3.782', 'epoch': '1'}
+100%|██████████| 25/25 [07:35<00:00, 21.66s/it]100%|██████████| 25/25 [07:35<00:00, 18.20s/it]
+
+  Training complete! Duration: 7m 35s
+
+  Saving model to output/...
+  Saved LoRA adapter weights
+  Saved tokenizer
+  Saved training metadata to output/training_info.json
+
+  Running post-training test (after fine-tuning)...
+Both `max_new_tokens` (=100) and `max_length`(=2048) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+    Q: What is an array?...
+    A: An array is a collection of values. An array can have different types of values,...
+
+Both `max_new_tokens` (=100) and `max_length`(=2048) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+    Q: What is a linked list?...
+    A: A linked list is a data structure in which each node contains a reference to the...
+
+Both `max_new_tokens` (=100) and `max_length`(=2048) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+    Q: What is the difference between a singly linked list and a do...
+    A: A singly linked list is a list of nodes where each node contains a reference to ...
+
+  Experiment saved to experiments/20260415_230313_TinyLlama-1.1B-Chat-v1.0_cs_assistant_lora.json
+  Compare with past experiments in the experiments/ folder!
+
+============================================================
+  TRAINING COMPLETE!
+============================================================
+  Model:          TinyLlama/TinyLlama-1.1B-Chat-v1.0
+  Method:         lora
+  Epochs:         1
+  Final Loss:     3.7823
+  Training Time:  7m 35s
+  Saved To:       output/
+  Experiment Log: experiments/20260415_230313_TinyLlama-1.1B-Chat-v1.0_cs_assistant_lora.json
+
+  NEXT STEPS:
+  1. Run the chatbot:  python app.py
+  2. Chat with your fine-tuned model!
+  3. Share the Gradio link for your portfolio
+============================================================

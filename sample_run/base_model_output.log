@@ -1,0 +1,11 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Using device: cpu
+============================================================
+  RUNNING IN BASE MODEL MODE (--base flag)
+  This is the model BEFORE fine-tuning.
+  Compare this with the fine-tuned version to see the difference!
+============================================================
+Loading base model: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights:   0%|          | 1/201 [00:00<01:58,  1.69it/s]Loading weights:   1%|          | 2/201 [00:00<01:00,  3.30it/s]Loading weights:  42%|████▏     | 85/201 [00:00<00:00, 164.18it/s]Loading weights:  55%|█████▌    | 111/201 [00:01<00:00, 123.05it/s]Loading weights:  65%|██████▍   | 130/201 [00:01<00:00, 86.34it/s] Loading weights:  72%|███████▏  | 144/201 [00:01<00:00, 91.02it/s]Loading weights:  78%|███████▊  | 157/201 [00:01<00:00, 80.23it/s]Loading weights:  84%|████████▎ | 168/201 [00:02<00:00, 81.20it/s]Loading weights:  89%|████████▊ | 178/201 [00:02<00:00, 78.87it/s]Loading weights:  93%|█████████▎| 187/201 [00:02<00:00, 75.10it/s]Loading weights:  98%|█████████▊| 196/201 [00:02<00:00, 73.66it/s]Loading weights: 100%|██████████| 201/201 [00:02<00:00, 80.48it/s]
+/Users/qratul/anaconda3/lib/python3.11/multiprocessing/resource_tracker.py:224: UserWarning: resource_tracker: There appear to be 2 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

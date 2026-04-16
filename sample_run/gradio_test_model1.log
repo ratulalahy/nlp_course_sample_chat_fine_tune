@@ -1,0 +1,10 @@
+=== Gradio Test: Fine-tuned Qwen3-0.6B on qa_bot ===
+Model: Qwen/Qwen3-0.6B
+Dataset: datasets/qa_bot.json
+Method: LoRA
+
+Gradio running at http://127.0.0.1:7860
+Test query: "What is photosynthesis?"
+Response: "Photosynthesis is a process that plants, algae and some bacteria use to convert light energy into chemical energy. This process takes place in the chloroplasts of plant cells."
+
+Status: PASSED

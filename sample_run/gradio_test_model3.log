@@ -1,0 +1,10 @@
+Loaded as API: http://127.0.0.1:7860/
+Q: What is an array?
+A: An array is a collection of related data elements. In JavaScript, arrays are represented as an array literal or an array constructor function. The array syntax is: ```var arr = [1, 2, 3];```
+
+Q: What is recursion?
+A: Recursion is a programming technique that allows you to write code that calls itself repeatedly without using too many nested loops. It can be used in various ways such as finding the factorial of a n
+
+Q: Explain the difference between a stack and a queue.
+A: A stack is a linear data structure that stores elements in order. Each element is added at the top of the stack and then removed from the top when it needs to be accessed. Queues on the other hand are
+
